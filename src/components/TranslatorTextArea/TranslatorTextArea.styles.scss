@@ -1,0 +1,49 @@
+$white-color: #fff;
+
+.translator-text-area-container {
+    position: relative;
+    background: #343434;
+    box-shadow: 0 0 1em #1b1b18;
+    border-radius: 5px;
+
+    .translator-text-area {
+        width: 450px;
+        height: 250px;
+        resize: none;
+        border: none;
+        background: transparent;
+        outline: none;
+        color: $white-color;
+        font-size: 20px;
+        padding: 7px;
+    }
+
+    .close-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: $white-color;
+        font-size: 23px;
+    }
+
+    .copy-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        position: absolute;
+        bottom: 20px;
+        right: 10px;
+        width: 100px;
+        color: #6e6e6e;
+        font-size: 17px;
+
+        span {
+            cursor: pointer;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+        }
+    }
+}

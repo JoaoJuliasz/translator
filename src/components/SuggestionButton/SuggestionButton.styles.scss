@@ -1,0 +1,15 @@
+.suggestion-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 12px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 25px;
+    background: #4a4949;
+    padding: 10px;
+    font-size: 13px;
+
+    .lang-type {
+        font-weight: bold;
+    }
+}
