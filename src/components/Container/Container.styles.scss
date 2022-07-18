@@ -1,10 +1,23 @@
 .container {
     display: flex;
     justify-content: space-around;
+    flex-direction: column;
     margin: auto;
     width: 80%;
 
-    .left-translator-container {
-        position: relative;
+    .lang-selectors {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin: auto;
+    }
+
+    .translators-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        .left-translator-container {
+            position: relative;
+        }
     }
 }

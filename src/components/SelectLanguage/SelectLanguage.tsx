@@ -18,7 +18,7 @@ type SelectLanguageProps = {
 const SelectLanguage = ({ options, selectValue, handleChange }: SelectLanguageProps) => {
 
     const selectStyle = {
-        control: (styles: any) => ({ ...styles, background: '#343434' }),
+        control: (styles: any) => ({ ...styles, background: '#343434', width: '430px' }),
         singleValue: (styles: any) => ({ ...styles, color: '#fff' }),
         menuList: (styles: any) => ({ ...styles, background: '#343434', color: '#fff' }),
         option: (styles: any, state: any) => ({ ...styles, background: state.isSelected ? '#525151' : (state.isFocused && '#676565') }),

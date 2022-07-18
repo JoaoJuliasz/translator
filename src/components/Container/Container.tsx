@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 //Libs
 // @ts-ignore
 import { ValueType } from "react-select/lib/types";
-
+import { faFile, faLanguage } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //utils
 import instance from "../../config/config";
 import { Language } from "../../types/types";
@@ -32,8 +33,11 @@ const Container = () => {
     const [suggestionLanguage, setSuggestionLanguage] = useState<SelectedLanguage>('')
     const [textToTranslate, setTextToTranslate] = useState<string>('')
     const [translatedText, setTranslatedText] = useState<string>('')
+    const [fileToTranslate, setFileToTranslate] = useState<File | null>(null)
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
+    const [isTranslateText, setIsTranslateText] = useState<boolean>(true)
+    const [fileTranslated, setFileTranslated] = useState<string>('')
 
     const callTranslate = (searchText: string, sourceLang?: SelectedLanguage, targetLang?: SelectedLanguage) => {
         instance.post('translate', {
@@ -105,6 +109,19 @@ const Container = () => {
         callTranslate(translatedText, newTranslateLanguage.value, newLanguageToTranslate.value)
     }
 
+    const translateUploadedFile = () => {
+        setLoading(true)
+        let data = new FormData();
+        fileToTranslate && data.append("file", fileToTranslate);
+        data.append("source", selectedTranslateLanguage.value);
+        data.append("target", selectedLanguageToTranslate.value);
+        instance.post('translate_file', data)
+            .then(res => {
+                setFileTranslated(res.data.translatedFileUrl)
+                setLoading(false)
+            })
+    }
+
     const selectTranslateLanguage = (option: ValueType<Language>) => {
         setSelectedTranslateLanguage(option)
     }
@@ -128,24 +145,51 @@ const Container = () => {
 
     return (
         <div className="container">
-            <div className="left-translator-container">
+            <div>
+                <h2>Translator</h2>
+                <div style={{ width: '30%', display: 'flex', justifyContent: 'space-around', margin: 'auto' }}>
+                    <button onClick={() => setIsTranslateText(true)} style={{ fontSize: '16px', background: isTranslateText ? '#e4ecfa' : '#fafafa', border: '1px solid #dadce0', color: '#1a73e8', padding: '10px', borderRadius: '5px', cursor: 'pointer' }}><FontAwesomeIcon icon={faFile} /> Translate text</button>
+                    <button onClick={() => setIsTranslateText(false)} style={{ fontSize: '16px', background: !isTranslateText ? '#e4ecfa' : '#fafafa', border: '1px solid #dadce0', color: '#1a73e8', padding: '10px', borderRadius: '5px', cursor: 'pointer' }}><FontAwesomeIcon icon={faLanguage} /> Translate document</button>
+                </div>
+            </div>
+            <div className="lang-selectors">
                 <SelectLanguage options={languages ?? []}
                     selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
-
-                <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage}
-                    placeholder={"Digitar algo"} setTextToTranslate={setTextToTranslate} setTranslatedText={setTranslatedText}
-                    setSuggestionLanguage={setSuggestionLanguage} translate={translate} />
-                {suggestionLanguage && suggestionLanguage !== selectedTranslateLanguage.value &&
-                    <SuggestionButton suggestionLanguage={returnSuggestionLanguageLabel() ?? ''} translateBySuggestionLanguage={translateBySuggestionLanguage} />
-                }
-            </div>
-            <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
-            <div>
+                <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
                 <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
                     selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
-                <TranslatorTextArea translatedText={translatedText} placeholder={loading ? 'Traduzindo...' : "Tradução"} loading={loading} />
             </div>
-        </div>
+            {isTranslateText ?
+                <div className="translators-container">
+                    <div className="left-translator-container">
+                        <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage}
+                            placeholder={"Digitar algo"} setTextToTranslate={setTextToTranslate} setTranslatedText={setTranslatedText}
+                            setSuggestionLanguage={setSuggestionLanguage} translate={translate} />
+                        {suggestionLanguage && suggestionLanguage !== selectedTranslateLanguage.value &&
+                            <SuggestionButton suggestionLanguage={returnSuggestionLanguageLabel() ?? ''} translateBySuggestionLanguage={translateBySuggestionLanguage} />
+                        }
+                    </div>
+                    <div>
+                        <TranslatorTextArea translatedText={translatedText} placeholder={loading ? 'Traduzindo...' : "Tradução"} loading={loading} />
+                    </div>
+                </div>
+                :
+                <div style={{
+                    border: '1px solid',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+                    <p>Supported file formats: .txt, .odt, .odp, .docx, .pptx, .epub, .html</p>
+                    <input onChange={(e) => {
+                        if (e.target?.files && e.target.files[0]) {
+                            setFileToTranslate(e?.target?.files[0])
+                        }
+                    }} type="file" name="" id="" accept=".txt, .odt, .odp, .docx, .pptx, .epub, .html" />
+                    {!fileTranslated && !loading ? <button onClick={translateUploadedFile}>Translate</button> : (loading ? 'translanting....' : <a href={fileTranslated} target="_blank">Download</a>)}
+                </div>
+            }
+        </div >
     );
 };
 
