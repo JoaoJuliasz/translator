@@ -1,0 +1,25 @@
+.translate-type-container {
+    .title {
+        color: 343434;
+    }
+    .type-container {
+        max-width: 350px;
+        display: flex;
+        justify-content: space-around;
+        margin: auto;
+
+        .type-btn {
+            font-size: 16px;
+            background: #fafafa;
+            border: 1px solid #dadce0;
+            color: #1a73e8;
+            padding: 6px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &.translate-text {
+                background: #e4ecfa;
+            }
+        }
+    }
+}

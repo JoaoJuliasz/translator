@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 //Libs
 // @ts-ignore
 import { ValueType } from "react-select/lib/types";
-import { faFile, faLanguage } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //utils
 import instance from "../../config/config";
 import { Language } from "../../types/types";
@@ -13,9 +11,11 @@ import TranslatorTextArea from '../TranslatorTextArea/TranslatorTextArea';
 import SuggestionButton from "../SuggestionButton/SuggestionButton";
 import SwitchLanguages from "../SwitchLanguages/SwitchLanguages";
 import SelectLanguage from "../SelectLanguage/SelectLanguage";
+import TranslateType from '../TranslateType/TranslateType'
 
 //styles
 import './Container.styles.scss';
+import FileTranslator from "../FileTranslator/FileTranslator";
 
 type ReceivedLanguage = {
     code: string
@@ -145,19 +145,15 @@ const Container = () => {
 
     return (
         <div className="container">
-            <div>
-                <h2>Translator</h2>
-                <div style={{ width: '30%', display: 'flex', justifyContent: 'space-around', margin: 'auto' }}>
-                    <button onClick={() => setIsTranslateText(true)} style={{ fontSize: '16px', background: isTranslateText ? '#e4ecfa' : '#fafafa', border: '1px solid #dadce0', color: '#1a73e8', padding: '10px', borderRadius: '5px', cursor: 'pointer' }}><FontAwesomeIcon icon={faFile} /> Translate text</button>
-                    <button onClick={() => setIsTranslateText(false)} style={{ fontSize: '16px', background: !isTranslateText ? '#e4ecfa' : '#fafafa', border: '1px solid #dadce0', color: '#1a73e8', padding: '10px', borderRadius: '5px', cursor: 'pointer' }}><FontAwesomeIcon icon={faLanguage} /> Translate document</button>
-                </div>
-            </div>
+            <TranslateType isTranslateText={isTranslateText} setIsTranslateText={setIsTranslateText} />
             <div className="lang-selectors">
-                <SelectLanguage options={languages ?? []}
-                    selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
-                <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
-                <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
-                    selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
+                <>
+                    <SelectLanguage options={languages ?? []}
+                        selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
+                    <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
+                    <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
+                        selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
+                </>
             </div>
             {isTranslateText ?
                 <div className="translators-container">
@@ -174,22 +170,9 @@ const Container = () => {
                     </div>
                 </div>
                 :
-                <div style={{
-                    border: '1px solid',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}>
-                    <p>Supported file formats: .txt, .odt, .odp, .docx, .pptx, .epub, .html</p>
-                    <input onChange={(e) => {
-                        if (e.target?.files && e.target.files[0]) {
-                            setFileToTranslate(e?.target?.files[0])
-                        }
-                    }} type="file" name="" id="" accept=".txt, .odt, .odp, .docx, .pptx, .epub, .html" />
-                    {!fileTranslated && !loading ? <button onClick={translateUploadedFile}>Translate</button> : (loading ? 'translanting....' : <a href={fileTranslated} target="_blank">Download</a>)}
-                </div>
+                <FileTranslator fileToTranslate={fileToTranslate} fileTranslated={fileTranslated} loading={loading} translateUploadedFile={translateUploadedFile} setFileToTranslate={setFileToTranslate} />
             }
-        </div >
+        </div>
     );
 };
 

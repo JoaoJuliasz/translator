@@ -2,7 +2,12 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    position: relative;
+    position: absolute;
     top: 20px;
     font-size: 18px;
+    left: 0;
+    right: 0;
+    color: #343434;
+    margin: auto;
+    z-index: 1;
 }
