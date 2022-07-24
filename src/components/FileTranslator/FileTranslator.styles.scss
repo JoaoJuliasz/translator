@@ -24,6 +24,10 @@
             border-radius: 5px;
             cursor: pointer;
             margin: 6px;
+            &:hover {
+                background: #ebf0f8;
+                color: #0c4da1;
+            }
         }
 
         #file-input {
@@ -45,6 +49,10 @@
 
         &.remove-decoration {
             text-decoration: none;
+        }
+
+        &:hover {
+            background: #f2f2f2;
         }
     }
 }

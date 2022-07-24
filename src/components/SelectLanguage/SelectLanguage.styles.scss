@@ -2,12 +2,12 @@
     margin: 15px;
     z-index: 2;
 
-    .teste {
+    .select-language {
         width: 320px;
     }
 
     @media only screen and (max-width: 700px) {
-        .teste {
+        .select-language {
             width: calc((100vw - 30px) /2);
         }
     }

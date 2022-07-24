@@ -8,7 +8,7 @@ type SuggestionButtonProps = {
 
 const SuggestionButton = ({ suggestionLanguage, translateBySuggestionLanguage }: SuggestionButtonProps) => {
     return (
-        <div>
+        <div className="suggestion-container">
             <span className="suggestion-btn"
                 onClick={translateBySuggestionLanguage}>traduzir do: <span className="lang-type">{suggestionLanguage}</span></span>
         </div>

@@ -29,7 +29,7 @@ const SelectLanguage = ({ options, selectValue, handleChange }: SelectLanguagePr
 
     return (
         <div className="select-language-container">
-            <Select className="teste" styles={selectStyle} options={options}
+            <Select className="select-language" styles={selectStyle} options={options}
                 value={selectValue}
                 onChange={handleChange}
             />

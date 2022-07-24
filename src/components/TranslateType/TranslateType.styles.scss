@@ -1,6 +1,6 @@
 .translate-type-container {
     .title {
-        color: 343434;
+        color: #343434;
     }
     .type-container {
         max-width: 350px;
@@ -19,6 +19,11 @@
 
             &.translate-text {
                 background: #e4ecfa;
+            }
+
+            &:hover {
+                background: #ebf0f8;
+                color: #0c4da1;
             }
         }
     }

@@ -10,11 +10,11 @@ type TranslateTypeProps = {
 
 const TranslateType = ({isTranslateText, setIsTranslateText}: TranslateTypeProps) => {
     return (
-        <div className="translate-type-container ">
+        <div className="translate-type-container">
             <h2 className="title">Translator</h2>
             <div className="type-container">
-                <button className={`type-btn ${isTranslateText && 'translate-text'}`} onClick={() => setIsTranslateText(true)} ><FontAwesomeIcon icon={faLanguage} /> Translate text</button>
-                <button className={`type-btn ${!isTranslateText && 'translate-text'}`} onClick={() => setIsTranslateText(false)} ><FontAwesomeIcon icon={faFile} /> Translate document</button>
+                <button id="text-btn" className={`type-btn ${isTranslateText && 'translate-text'}`} onClick={() => setIsTranslateText(true)} ><FontAwesomeIcon icon={faLanguage} /> Translate text</button>
+                <button id="file-btn" className={`type-btn ${!isTranslateText && 'translate-text'}`} onClick={() => setIsTranslateText(false)} ><FontAwesomeIcon icon={faFile} /> Translate document</button>
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ type SwitchLanguagesProps = {
 
 const SwitchLanguages = ({changeSourceAndTargetLanguages}: SwitchLanguagesProps) => {
     return (
-        <div>
+        <div className="switch-lang-container">
             <button className="switch-lang-btn" onClick={changeSourceAndTargetLanguages}><FontAwesomeIcon icon={faArrowRightArrowLeft} /></button>
         </div>
     );

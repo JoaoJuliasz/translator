@@ -12,16 +12,15 @@ import SuggestionButton from "../SuggestionButton/SuggestionButton";
 import SwitchLanguages from "../SwitchLanguages/SwitchLanguages";
 import SelectLanguage from "../SelectLanguage/SelectLanguage";
 import TranslateType from '../TranslateType/TranslateType'
+import FileTranslator from "../FileTranslator/FileTranslator";
 
 //styles
 import './Container.styles.scss';
-import FileTranslator from "../FileTranslator/FileTranslator";
 
 type ReceivedLanguage = {
     code: string
     name: string
 }
-
 
 type SelectedLanguage = string
 
@@ -147,13 +146,11 @@ const Container = () => {
         <div className="container">
             <TranslateType isTranslateText={isTranslateText} setIsTranslateText={setIsTranslateText} />
             <div className="lang-selectors">
-                <>
-                    <SelectLanguage options={languages ?? []}
-                        selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
-                    <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
-                    <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
-                        selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
-                </>
+                <SelectLanguage options={languages ?? []}
+                    selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
+                <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
+                <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
+                    selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
             </div>
             {isTranslateText ?
                 <div className="translators-container">
