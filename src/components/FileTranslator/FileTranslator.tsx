@@ -1,14 +1,35 @@
+import { useState } from 'react'
+import instance from "../../config/config";
+import { Language } from '../../types/types';
+
 import './FileTranslator.styles.scss'
 
 type FileTranslatorProps = {
-    fileToTranslate: File | null
-    fileTranslated: string
+    selectedLanguages: Language[]
     loading: boolean
-    translateUploadedFile: () => void
-    setFileToTranslate: (value: File | null) => void
+    setLoading: (value: boolean) => void
 }
 
-const FileTranslator = ({ fileToTranslate, fileTranslated, loading, translateUploadedFile, setFileToTranslate }: FileTranslatorProps) => {
+const FileTranslator = ({ selectedLanguages, loading, setLoading }: FileTranslatorProps) => {
+    const [fileToTranslate, setFileToTranslate] = useState<File | null>(null)
+    const [fileTranslated, setFileTranslated] = useState<string>('')
+
+    const translateUploadedFile = () => {
+        if (fileToTranslate) {
+            setLoading(true)
+            let data = new FormData();
+            fileToTranslate && data.append("file", fileToTranslate);
+            data.append("source", selectedLanguages[0].value);
+            data.append("target", selectedLanguages[1].value);
+            instance.post('translate_file', data)
+                .then(res => {
+                    console.log(res.data)
+                    setFileTranslated(res.data.translatedFileUrl)
+                    setLoading(false)
+                })
+        }
+    }
+
     return (
         <div className="file-translator-container">
             <p>Supported file formats: .txt, .odt, .odp, .docx, .pptx, .epub, .html</p>

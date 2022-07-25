@@ -32,11 +32,8 @@ const Container = () => {
     const [suggestionLanguage, setSuggestionLanguage] = useState<SelectedLanguage>('')
     const [textToTranslate, setTextToTranslate] = useState<string>('')
     const [translatedText, setTranslatedText] = useState<string>('')
-    const [fileToTranslate, setFileToTranslate] = useState<File | null>(null)
-    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [isTranslateText, setIsTranslateText] = useState<boolean>(true)
-    const [fileTranslated, setFileTranslated] = useState<string>('')
 
     const callTranslate = (searchText: string, sourceLang?: SelectedLanguage, targetLang?: SelectedLanguage) => {
         instance.post('translate', {
@@ -55,35 +52,6 @@ const Container = () => {
                 suggestionLanguage && setSuggestionLanguage('')
                 setLoading(false)
             })
-    }
-
-
-    const translate = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setLoading(true)
-        let searchText = event.target.value;
-        if (timer) {
-            clearTimeout(timer);
-        }
-
-        const newTimer = setTimeout(() => {
-            detectLanguage()
-            callTranslate(searchText)
-        }, 500)
-
-        setTimer(newTimer)
-        setTextToTranslate(searchText)
-
-        const detectLanguage = () => {
-            instance.post('detect', {
-                q: searchText,
-            })
-                .then(res => {
-                    const { language, confidence } = res.data[0]
-                    if (language !== selectedTranslateLanguage && confidence > 70) {
-                        setSuggestionLanguage(language)
-                    }
-                })
-        }
     }
 
     const translateBySuggestionLanguage = () => {
@@ -106,19 +74,6 @@ const Container = () => {
         setTextToTranslate(newTextToTranslate)
         setSuggestionLanguage('')
         callTranslate(translatedText, newTranslateLanguage.value, newLanguageToTranslate.value)
-    }
-
-    const translateUploadedFile = () => {
-        setLoading(true)
-        let data = new FormData();
-        fileToTranslate && data.append("file", fileToTranslate);
-        data.append("source", selectedTranslateLanguage.value);
-        data.append("target", selectedLanguageToTranslate.value);
-        instance.post('translate_file', data)
-            .then(res => {
-                setFileTranslated(res.data.translatedFileUrl)
-                setLoading(false)
-            })
     }
 
     const selectTranslateLanguage = (option: ValueType<Language>) => {
@@ -155,9 +110,9 @@ const Container = () => {
             {isTranslateText ?
                 <div className="translators-container">
                     <div className="left-translator-container">
-                        <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage}
+                        <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage} selectedTranslateLanguage={selectedTranslateLanguage} loading={loading}
                             placeholder={"Digitar algo"} setTextToTranslate={setTextToTranslate} setTranslatedText={setTranslatedText}
-                            setSuggestionLanguage={setSuggestionLanguage} translate={translate} />
+                            setSuggestionLanguage={setSuggestionLanguage} setLoading={setLoading} callTranslate={callTranslate}/>
                         {suggestionLanguage && suggestionLanguage !== selectedTranslateLanguage.value &&
                             <SuggestionButton suggestionLanguage={returnSuggestionLanguageLabel() ?? ''} translateBySuggestionLanguage={translateBySuggestionLanguage} />
                         }
@@ -167,7 +122,7 @@ const Container = () => {
                     </div>
                 </div>
                 :
-                <FileTranslator fileToTranslate={fileToTranslate} fileTranslated={fileTranslated} loading={loading} translateUploadedFile={translateUploadedFile} setFileToTranslate={setFileToTranslate} />
+                <FileTranslator selectedLanguages={[selectedTranslateLanguage, selectedLanguageToTranslate]} loading={loading} setLoading={setLoading} />
             }
         </div>
     );

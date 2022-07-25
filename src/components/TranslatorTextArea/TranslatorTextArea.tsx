@@ -2,26 +2,61 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faXmark } from '@fortawesome/free-solid-svg-icons'
 
+import instance from "../../config/config";
+
 //styles
 import './TranslatorTextArea.styles.scss'
+import { Language } from '../../types/types';
 
 type TranslatorTextAreaProps = {
     textToTranslate?: string
     translatedText?: string
     suggestionLanguage?: string
+    selectedTranslateLanguage?: Language
     placeholder: string
     loading?: boolean
     setTextToTranslate?: (value: string) => void
     setTranslatedText?: (value: string) => void
     setSuggestionLanguage?: (value: string) => void
-    translate?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+    setLoading?: (value: boolean) => void
+    callTranslate?: (searchText: string, sourceLang?: string, targetLang?: string) => void
 }
 
-const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguage, placeholder, loading, setTextToTranslate, setTranslatedText, setSuggestionLanguage, translate }: TranslatorTextAreaProps) => {
+const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguage, selectedTranslateLanguage,
+    placeholder, loading, setTextToTranslate, setTranslatedText, setSuggestionLanguage, setLoading, callTranslate }: TranslatorTextAreaProps) => {
 
     const [copied, setCopied] = useState<boolean>(false)
+    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+
+    const translate = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setLoading && setLoading(true)
+        let searchText = event.target.value;
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        const newTimer = setTimeout(() => {
+            detectLanguage()
+            callTranslate && callTranslate(searchText)
+        }, 500)
+
+        setTimer(newTimer)
+        setTextToTranslate && setTextToTranslate(searchText)
+
+        const detectLanguage = () => {
+            instance.post('detect', {
+                q: searchText,
+            })
+                .then(res => {
+                    const { language, confidence } = res.data[0]
+                    if (language !== selectedTranslateLanguage && confidence > 70) {
+                        setSuggestionLanguage && setSuggestionLanguage(language)
+                    }
+                })
+        }
+    }
 
     const translating = () => {
         if (loading && translatedText) {
@@ -37,7 +72,6 @@ const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguag
         setCopied(true)
     }
 
-
     useEffect(() => {
         setCopied(false)
     }, [textToTranslate, translatedText])
@@ -46,7 +80,7 @@ const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguag
         <div className="translator-text-area-container">
             <textarea ref={textAreaRef} placeholder={placeholder} className="translator-text-area"
                 value={textToTranslate ?? translating()}
-                onChange={event => translate && translate(event)}
+                onChange={event => callTranslate && translate(event)}
             />
             {textToTranslate &&
                 <FontAwesomeIcon icon={faXmark} className="close-icon" onClick={() => {
