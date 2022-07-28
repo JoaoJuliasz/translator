@@ -59,7 +59,9 @@ const Container = () => {
         const newLanguageToTranslate = selectedTranslateLanguage
         const suggestedLanguage = languages?.find(language => language.value === suggestionLanguage)
         setSelectedTranslateLanguage(prev => suggestedLanguage ?? newLanguageToTranslate)
-        setSelectedLanguageToTranslate(prev => newLanguageToTranslate)
+        if (suggestedLanguage?.value === selectedLanguageToTranslate.value) {
+             setSelectedLanguageToTranslate(prev => newLanguageToTranslate)
+        }
         setSuggestionLanguage('')
         callTranslate(textToTranslate, suggestionLanguage, newLanguageToTranslate.value)
     }
@@ -112,7 +114,7 @@ const Container = () => {
                     <div className="left-translator-container">
                         <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage} selectedTranslateLanguage={selectedTranslateLanguage} loading={loading}
                             placeholder={"Digitar algo"} setTextToTranslate={setTextToTranslate} setTranslatedText={setTranslatedText}
-                            setSuggestionLanguage={setSuggestionLanguage} setLoading={setLoading} callTranslate={callTranslate}/>
+                            setSuggestionLanguage={setSuggestionLanguage} setLoading={setLoading} callTranslate={callTranslate} />
                         {suggestionLanguage && suggestionLanguage !== selectedTranslateLanguage.value &&
                             <SuggestionButton suggestionLanguage={returnSuggestionLanguageLabel() ?? ''} translateBySuggestionLanguage={translateBySuggestionLanguage} />
                         }

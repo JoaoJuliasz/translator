@@ -1,10 +1,11 @@
-$white-color: #fff;
+$text-color: #6e6e6e;
 
 .translator-text-area-container {
     position: relative;
-    background: #343434;
-    box-shadow: 0 0 1em #1b1b18;
-    border-radius: 5px;
+    // background: #343434;
+    // box-shadow: 0 0 1em #1b1b18;
+    border: 1px solid #c5bcbc;
+    border-radius: 4px;
     min-width: 464px;
     display: flex;
 
@@ -15,14 +16,14 @@ $white-color: #fff;
         border: none;
         background: transparent;
         outline: none;
-        color: $white-color;
+        color: $text-color;
         font-size: 20px;
         padding: 7px;
     }
 
     .close-icon {
         cursor: pointer;
-        color: $white-color;
+        color: $text-color;
         font-size: 23px;
         margin: 8px 11px 12px 3px;
     }

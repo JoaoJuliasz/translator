@@ -3,11 +3,16 @@
     bottom: 20px;
     left: 12px;
     cursor: pointer;
-    color: #fff;
+    color: #6e6e6e;
     border-radius: 25px;
-    background: #4a4949;
-    padding: 10px;
+    // background: #4a4949;
+    background: #f8f9fa;
+    padding: 5px 10px;
     font-size: 13px;
+
+    &:hover {
+        border: 1px solid #9e9c9c;
+    }
 
     .lang-type {
         font-weight: bold;
