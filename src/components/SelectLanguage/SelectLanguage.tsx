@@ -2,7 +2,6 @@
 import Select from 'react-select';
 //@ts-ignore
 import { ValueType } from "react-select/lib/types";
-
 //utils
 import { Language } from "../../types/types";
 
@@ -15,23 +14,29 @@ type SelectLanguageProps = {
     handleChange: (option: ValueType<Language>) => void
 }
 
+
 const SelectLanguage = ({ options, selectValue, handleChange }: SelectLanguageProps) => {
 
+    const defaultBorder = '1px solid #dbdbdb'
+    const textColor = '#6e6e6e'
+
+    let width = window.screen.width;
+
     const selectStyle = {
-        control: (styles: any) => ({ ...styles, width: '100%', border: '1px solid #c5bcbc' }),
-        // control: (styles: any) => ({ ...styles, background: '#343434', width: '100%' }),
-        singleValue: (styles: any) => ({ ...styles, color: '#6e6e6e' }),
-        input: (styles: any) => ({ ...styles, color: '#6e6e6e' }),
+        container: (styles: any) => ({ ...styles, position: 'inherit' }),
+        control: (styles: any) => ({ ...styles, width: '100%', border: defaultBorder }),
+        singleValue: (styles: any) => ({ ...styles, color: textColor }),
+        input: (styles: any) => ({ ...styles, color: textColor }),
         indicatorSeparator: (styles: any) => ({ ...styles, display: 'none' }),
         valueContainer: (styles: any) => ({ ...styles, padding: 'auto' }),
-        menuList: (styles: any) => ({ ...styles, color: '#6e6e6e', minWidth: '150px' }),
-        // menuList: (styles: any) => ({ ...styles, background: '#343434', color: '#fff', minWidth: '150px' }),
-        option: (styles: any, state: any) => ({ ...styles, background: state.isSelected ? '#525151' : (state.isFocused && '#676565'), color: (state.isSelected || state.isFocused) && '#fff'}),
+        menu: (styles: any) => ({ ...styles, border: defaultBorder, right: '0', left: '0' }),
+        menuList: (styles: any) => ({ ...styles, color: textColor, minWidth: '150px', display: "grid", gridTemplateColumns: width <= 410 ? 'auto auto auto' : 'auto auto auto auto' }),
+        option: (styles: any, state: any) => ({ ...styles, cursor: 'pointer', background: state.isSelected ? '#525151' : (state.isFocused && '#676565'), color: (state.isSelected || state.isFocused) && '#fff' }),
     }
 
     return (
         <div className="select-language-container">
-            <Select className="select-language" styles={selectStyle} options={options}
+            <Select className="select-language" classNamePrefix="react-language" styles={selectStyle} options={options}
                 value={selectValue}
                 onChange={handleChange}
             />

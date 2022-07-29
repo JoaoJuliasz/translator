@@ -23,7 +23,6 @@ const FileTranslator = ({ selectedLanguages, loading, setLoading }: FileTranslat
             data.append("target", selectedLanguages[1].value);
             instance.post('translate_file', data)
                 .then(res => {
-                    console.log(res.data)
                     setFileTranslated(res.data.translatedFileUrl)
                     setLoading(false)
                 })
@@ -38,6 +37,7 @@ const FileTranslator = ({ selectedLanguages, loading, setLoading }: FileTranslat
                 <input id="file-input" onChange={(e) => {
                     if (e.target?.files && e.target.files[0]) {
                         setFileToTranslate(e?.target?.files[0])
+                        setFileTranslated('')
                     }
                 }} type="file" name="" accept=".txt, .odt, .odp, .docx, .pptx, .epub, .html" />
                 <p>{fileToTranslate?.name}</p>
