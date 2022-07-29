@@ -60,10 +60,13 @@ const Container = () => {
         const suggestedLanguage = languages?.find(language => language.value === suggestionLanguage)
         setSelectedTranslateLanguage(prev => suggestedLanguage ?? newLanguageToTranslate)
         if (suggestedLanguage?.value === selectedLanguageToTranslate.value) {
-             setSelectedLanguageToTranslate(prev => newLanguageToTranslate)
+            setSelectedLanguageToTranslate(prev => newLanguageToTranslate)
         }
         setSuggestionLanguage('')
-        callTranslate(textToTranslate, suggestionLanguage, newLanguageToTranslate.value)
+        if (textToTranslate) {
+            console.warn('entrei')
+            callTranslate(textToTranslate, suggestionLanguage, newLanguageToTranslate.value)
+        }
     }
 
     const changeSourceAndTargetLanguages = () => {
@@ -102,16 +105,17 @@ const Container = () => {
     return (
         <div className="container">
             <TranslateType isTranslateText={isTranslateText} setIsTranslateText={setIsTranslateText} />
+            {/* <div> */}
             <div className="lang-selectors">
                 <SelectLanguage options={languages ?? []}
                     selectValue={selectedTranslateLanguage} handleChange={selectTranslateLanguage} />
                 <SwitchLanguages changeSourceAndTargetLanguages={changeSourceAndTargetLanguages} />
                 <SelectLanguage options={languages?.filter(language => language.value !== selectedTranslateLanguage.value) ?? []}
-                    selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} />
+                    selectValue={selectedLanguageToTranslate} handleChange={selectLanguageToTranslate} left={true}/>
             </div>
             {isTranslateText ?
                 <div className="translators-container">
-                    <div className="left-translator-container">
+                    <div className=" translator left-translator-container">
                         <TranslatorTextArea textToTranslate={textToTranslate} suggestionLanguage={suggestionLanguage} selectedTranslateLanguage={selectedTranslateLanguage} loading={loading}
                             placeholder={"Digitar algo"} setTextToTranslate={setTextToTranslate} setTranslatedText={setTranslatedText}
                             setSuggestionLanguage={setSuggestionLanguage} setLoading={setLoading} callTranslate={callTranslate} />
@@ -119,13 +123,14 @@ const Container = () => {
                             <SuggestionButton suggestionLanguage={returnSuggestionLanguageLabel() ?? ''} translateBySuggestionLanguage={translateBySuggestionLanguage} />
                         }
                     </div>
-                    <div>
+                    <div className="translator right-translator-container">
                         <TranslatorTextArea translatedText={translatedText} placeholder={loading ? 'Traduzindo...' : "Tradução"} loading={loading} />
                     </div>
                 </div>
                 :
                 <FileTranslator selectedLanguages={[selectedTranslateLanguage, selectedLanguageToTranslate]} loading={loading} setLoading={setLoading} />
             }
+            {/* </div> */}
         </div>
     );
 };

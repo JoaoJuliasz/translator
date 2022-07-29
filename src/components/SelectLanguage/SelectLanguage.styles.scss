@@ -1,14 +1,24 @@
 .select-language-container {
-    margin: 15px;
+    margin: 15px 15px 0;
     z-index: 2;
+    width: 100%;
+    max-width: 466px;
 
-    .select-language {
-        width: 320px;
+    &.right {
+        margin-right: 20px;
     }
 
-    @media only screen and (max-width: 700px) {
+    &.left {
+        margin-left: 20px;
+    }
+
+    .select-language {
+        width: 100%;
+    }
+
+    @media only screen and (max-width: 719px) {
         .select-language {
-            width: calc((100vw - 30px) /2);
+            width: calc((100vw - 40px) /2);
         }
     }
 }

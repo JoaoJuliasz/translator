@@ -5,8 +5,8 @@ $text-color: #6e6e6e;
     // background: #343434;
     // box-shadow: 0 0 1em #1b1b18;
     border: 1px solid #dbdbdb;
-    border-radius: 4px;
-    min-width: 464px;
+    border-radius: 0px 0 4px 4px;
+    // min-width: 464px;
     display: flex;
 
     .translator-text-area {
@@ -56,10 +56,9 @@ $text-color: #6e6e6e;
         }
     }
 
-    @media only screen and (max-width: 934px) {
+    @media only screen and (max-width: 719px) {
         max-height: 250px;
-        max-width: 550px;
-        margin: 5px auto;
+        max-width: 100%;
         min-width: auto;
     }
 }
