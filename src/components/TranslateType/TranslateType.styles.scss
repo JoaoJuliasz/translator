@@ -17,6 +17,12 @@
             border-radius: 5px;
             cursor: pointer;
 
+            svg {
+                path {
+                    fill: #1a73e8;
+                }
+            }
+
             &.translate-text {
                 background: #e4ecfa;
             }
@@ -24,6 +30,12 @@
             &:hover {
                 background: #ebf0f8;
                 color: #0c4da1;
+
+                svg {
+                    path {
+                        fill: #0c4da1;
+                    }
+                }
             }
         }
 

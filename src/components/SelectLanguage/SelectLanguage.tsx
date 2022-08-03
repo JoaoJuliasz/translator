@@ -35,8 +35,6 @@ const SelectLanguage = ({ options, selectValue, handleChange, left }: SelectLang
         option: (styles: any, state: any) => ({ ...styles, cursor: 'pointer', padding: '8px 11px', background: state.isSelected ? '#525151' : (state.isFocused && '#676565'), color: (state.isSelected || state.isFocused) && '#fff' }),
     }
 
-    console.warn(width <= 410 ? '100%' : '80%')
-
     return (
         <div className={`select-language-container ${left ? 'left' : 'right'}`}>
             <Select className='select-language' classNamePrefix="react-language" styles={selectStyle} options={options}

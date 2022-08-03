@@ -1,7 +1,5 @@
 //libs
-import { faArrowRightArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import { SwapOutlined } from '@ant-design/icons';
 //styles
 import './SwitchLanguages.styles.scss'
 
@@ -12,7 +10,7 @@ type SwitchLanguagesProps = {
 const SwitchLanguages = ({changeSourceAndTargetLanguages}: SwitchLanguagesProps) => {
     return (
         <div className="switch-lang-container">
-            <button className="switch-lang-btn" onClick={changeSourceAndTargetLanguages}><FontAwesomeIcon icon={faArrowRightArrowLeft} /></button>
+            <button className="switch-lang-btn" onClick={changeSourceAndTargetLanguages}><SwapOutlined /></button>
         </div>
     );
 };

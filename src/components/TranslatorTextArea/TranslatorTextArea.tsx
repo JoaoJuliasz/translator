@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { StarOutlined, CloseOutlined, CopyOutlined, StarFilled } from '@ant-design/icons';
 
 import instance from "../../config/config";
 
@@ -15,6 +14,7 @@ type TranslatorTextAreaProps = {
     selectedTranslateLanguage?: Language
     placeholder: string
     loading?: boolean
+    favorites?: { textToTranslate: string, translatedText: string, sourceLang: Language, targetLang: Language }
     setTextToTranslate?: (value: string) => void
     setTranslatedText?: (value: string) => void
     setSuggestionLanguage?: (value: string) => void
@@ -23,10 +23,10 @@ type TranslatorTextAreaProps = {
 }
 
 const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguage, selectedTranslateLanguage,
-    placeholder, loading, setTextToTranslate, setTranslatedText, setSuggestionLanguage, setLoading, callTranslate }: TranslatorTextAreaProps) => {
+    placeholder, loading, favorites, setTextToTranslate, setTranslatedText, setSuggestionLanguage, setLoading, callTranslate }: TranslatorTextAreaProps) => {
 
-    const [copied, setCopied] = useState<boolean>(false)
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
+    const [favorited, setFavorited] = useState<boolean>(false)
 
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
@@ -69,29 +69,58 @@ const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguag
         textAreaRef.current?.select();
         document.execCommand("copy");
         e.target.focus();
-        setCopied(true)
+    }
+
+    const addToFavorite = () => {
+        const savedFavorites = localStorage.getItem('favorites')
+        const favoritesArr = savedFavorites ? JSON.parse(savedFavorites) : []
+        const favoriteIndex = favoritesArr.findIndex((favorite: { translatedText: string }) => favorite.translatedText === translatedText)
+
+        if (translatedText) {
+            if (favoriteIndex > -1) {
+                favoritesArr.splice(favoriteIndex, 1)
+            } else {
+                favoritesArr.push(favorites)
+            }
+            localStorage.setItem('favorites', JSON.stringify(favoritesArr))
+        }
+        isTextFavorited()
+    }
+
+    const isTextFavorited = () => {
+        const savedFavorites = localStorage.getItem('favorites')
+        const favoritesArr = savedFavorites && JSON.parse(savedFavorites)
+        const favoriteIndex = favoritesArr?.findIndex((favorite: { translatedText: string }) => favorite.translatedText === translatedText)
+        setFavorited(favoriteIndex > -1 ? true : false)
     }
 
     useEffect(() => {
-        setCopied(false)
-    }, [textToTranslate, translatedText])
+        isTextFavorited()
+    }, [translatedText])
 
     return (
-        <div className="translator-text-area-container">
+        <div className={`translator-text-area-container ${callTranslate ? 'right' : 'left'}`}>
             <textarea ref={textAreaRef} placeholder={placeholder} className="translator-text-area"
                 value={textToTranslate ?? translating()}
                 onChange={event => callTranslate && translate(event)}
             />
             {textToTranslate &&
-                <FontAwesomeIcon icon={faXmark} className="close-icon" onClick={() => {
+                <CloseOutlined className="close-icon" onClick={() => {
                     setTextToTranslate && setTextToTranslate('')
                     setTranslatedText && setTranslatedText('')
                     suggestionLanguage && setSuggestionLanguage && setSuggestionLanguage('')
                 }} />}
             {translatedText &&
-                <div onClick={copyLink} className="copy-container">
-                    <span>{copied ? 'copied' : 'copy'}</span>
-                    <FontAwesomeIcon icon={faCopy} className="copy-icon" />
+                <div className="buttons-container">
+                    <div onClick={copyLink} className="copy-container">
+                        <CopyOutlined className="icon" />
+                    </div>
+                    <div>
+                        {!favorited ? <StarOutlined onClick={addToFavorite} className="icon" />
+                            :
+                            <StarFilled style={{color: 'yellow'}} onClick={addToFavorite} className="icon" />
+                        }
+                    </div>
                 </div>
             }
         </div >

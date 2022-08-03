@@ -1,0 +1,82 @@
+.btns-modal-container {
+    .btn {
+        border: 1px solid #dbdbdb;
+        border-radius: 50%;
+        padding: 6px 12px;
+        font-size: 25px;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6e6e6e;
+    }
+}
+.modal-container {
+    .clear-container {
+        display: flex;
+        justify-content: end;
+        width: 100%;
+        margin: 20px 0 0;
+        border-bottom: 1px solid #a4a4a4;
+
+        span {
+            cursor: pointer;
+            color: #aeaeae;
+
+            &:hover {
+                color: #dadada;
+            }
+        }
+    }
+    .modal-values-container {
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 1px solid #a4a4a4;
+        cursor: pointer;
+        flex-direction: column;
+        position: relative;
+
+        &:hover {
+            background: #f8f7f7;
+        }
+
+        .lang-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 40%;
+        }
+
+        .values-container {
+            display: flex;
+            flex-direction: column;
+
+            .values {
+                margin: 3px 0;
+                &.to-translate {
+                    color: #706c6c;
+                }
+
+                &.translated {
+                    color: #8f8d8d;
+                }
+            }
+        }
+
+        .favorite-icon {
+            position: absolute;
+            right: 10px;
+            font-size: 18px;
+
+            .yellow {
+                color: yellow;
+            }
+
+            &:hover {
+                .yellow{color: red;}
+            }
+        }
+    }
+}

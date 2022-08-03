@@ -1,0 +1,11 @@
+.ant-modal {
+    top: 50px;
+
+    .ant-modal-content {
+        border-radius: 3px;
+        .ant-modal-body {
+            max-height: 70vh;
+            overflow: scroll;
+        }
+    }
+}
