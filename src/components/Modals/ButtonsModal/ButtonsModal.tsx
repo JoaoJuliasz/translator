@@ -20,6 +20,8 @@ const Favorite = ({ modalType, type, setFavorites, openModal, openTranslateByMod
 
     const ref = useRef<ModalHandle>(null)
 
+    const modalTypeArr = modalType ? JSON.parse(modalType) : []
+
     const isTextFavorited = (translatedText: string) => {
         const savedType = localStorage.getItem('favorites')
         const savedArr = savedType && JSON.parse(savedType)
@@ -52,7 +54,7 @@ const Favorite = ({ modalType, type, setFavorites, openModal, openTranslateByMod
                     <div className="clear-container">
                         <span onClick={() => clearModalInfos(type, ref)}>Limpar {type === 'favorites' ? 'Favoritos' : 'Histórico'}</span>
                     </div>
-                    {modalType && (JSON.parse(modalType).length > 0 ? JSON.parse(modalType).map((typeMap: ModalMap) =>
+                    {modalTypeArr.length > 0 ? modalTypeArr.map((typeMap: ModalMap) =>
                         <div className="modal-values-container" onClick={() => openTranslateByModal(type, typeMap, ref)}>
                             <div className="lang-container">
                                 <span>{typeMap?.sourceLang?.label}</span>
@@ -74,8 +76,7 @@ const Favorite = ({ modalType, type, setFavorites, openModal, openTranslateByMod
                         <div className="no-content-container">
                             <h2>There is no translations</h2>
                             <div />
-                        </div>)
-                    }
+                        </div>}
                 </div>
             </ModalContainer>
         </div >
