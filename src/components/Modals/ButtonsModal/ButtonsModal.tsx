@@ -10,12 +10,13 @@ import './ButtonsModal.styles.scss'
 type FavoriteModalProps = {
     modalType: string | null
     type: string
+    setFavorites: (value: string) => void
     openModal: (type: string, ref: React.RefObject<ModalHandle>) => void
     openTranslateByModal: (type: string, typeMap: ModalMap, ref: React.RefObject<ModalHandle>) => void
     clearModalInfos: (type: string, ref: React.RefObject<ModalHandle>) => void
 }
 
-const Favorite = ({ modalType, type, openModal, openTranslateByModal, clearModalInfos }: FavoriteModalProps) => {
+const Favorite = ({ modalType, type, setFavorites, openModal, openTranslateByModal, clearModalInfos }: FavoriteModalProps) => {
 
     const ref = useRef<ModalHandle>(null)
 
@@ -26,21 +27,22 @@ const Favorite = ({ modalType, type, openModal, openTranslateByModal, clearModal
         return favoriteIndex > -1
     }
 
-    // const addToFavorite = (translatedText: string) => {
-    //     const savedFavorites = localStorage.getItem('favorites')
-    //     const favoritesArr = savedFavorites ? JSON.parse(savedFavorites) : []
-    //     const favoriteIndex = favoritesArr.findIndex((favorite: { translatedText: string }) => favorite.translatedText === translatedText)
+    const addToFavorite = (translatedText: string, typeMap: ModalMap) => {
+        const savedFavorites = localStorage.getItem('favorites')
+        const favoritesArr = savedFavorites ? JSON.parse(savedFavorites) : []
+        const favoriteIndex = favoritesArr.findIndex((favorite: { translatedText: string }) => favorite.translatedText === translatedText)
 
-    //     if (translatedText) {
-    //         if (favoriteIndex > -1) {
-    //             favoritesArr.splice(favoriteIndex, 1)
-    //         } else {
-    //             favoritesArr.push(favorites)
-    //         }
-    //         localStorage.setItem('favorites', JSON.stringify(favoritesArr))
-    //     }
-    //     isTextFavorited()
-    // }
+        if (translatedText) {
+            if (favoriteIndex > -1) {
+                favoritesArr.splice(favoriteIndex, 1)
+            } else {
+                favoritesArr.push(typeMap)
+            }
+            localStorage.setItem('favorites', JSON.stringify(favoritesArr))
+            setFavorites(JSON.stringify(favoritesArr))
+        }
+        isTextFavorited(translatedText)
+    }
 
     return (
         <div className="btns-modal-container">
@@ -50,7 +52,7 @@ const Favorite = ({ modalType, type, openModal, openTranslateByModal, clearModal
                     <div className="clear-container">
                         <span onClick={() => clearModalInfos(type, ref)}>Limpar {type === 'favorites' ? 'Favoritos' : 'Histórico'}</span>
                     </div>
-                    {modalType && JSON.parse(modalType).map((typeMap: ModalMap) =>
+                    {modalType && (JSON.parse(modalType).length > 0 ? JSON.parse(modalType).map((typeMap: ModalMap) =>
                         <div className="modal-values-container" onClick={() => openTranslateByModal(type, typeMap, ref)}>
                             <div className="lang-container">
                                 <span>{typeMap?.sourceLang?.label}</span>
@@ -61,12 +63,21 @@ const Favorite = ({ modalType, type, openModal, openTranslateByModal, clearModal
                                 <span className="values to-translate">{typeMap.textToTranslate}</span>
                                 <span className="values translated">{typeMap.translatedText}</span>
                             </div>
-                            <div className="favorite-icon" onClick={() => console.warn('entrei aq ó')}>
+                            <div className="favorite-icon" onClick={(e) => {
+                                console.warn('entrei aq ó')
+                                addToFavorite(typeMap.translatedText, typeMap)
+                                if (e.stopPropagation) e.stopPropagation();
+                            }}>
                                 {isTextFavorited(typeMap.translatedText) ? <StarFilled className="yellow" /> : <StarOutlined />}
                             </div>
-                        </div>)}
+                        </div>) :
+                        <div className="no-content-container">
+                            <h2>There is no translations</h2>
+                            <div />
+                        </div>)
+                    }
                 </div>
-            </ModalContainer >
+            </ModalContainer>
         </div >
     );
 };

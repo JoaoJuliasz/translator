@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'https://libretranslate.de/'
+    baseURL: 'https://translate.terraprint.co/'
 })
 
 export default instance

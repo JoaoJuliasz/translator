@@ -118,7 +118,7 @@ const TranslatorTextArea = ({ textToTranslate, translatedText, suggestionLanguag
                     <div>
                         {!favorited ? <StarOutlined onClick={addToFavorite} className="icon" />
                             :
-                            <StarFilled style={{color: 'yellow'}} onClick={addToFavorite} className="icon" />
+                            <StarFilled className="icon yellow" style={{color: 'yellow'}} onClick={addToFavorite}/>
                         }
                     </div>
                 </div>

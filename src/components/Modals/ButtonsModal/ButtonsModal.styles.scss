@@ -69,13 +69,40 @@
             position: absolute;
             right: 10px;
             font-size: 18px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             .yellow {
-                color: yellow;
+                color: #e6e631;
             }
 
             &:hover {
-                .yellow{color: red;}
+                background: #f0eded;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .no-content-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        h2 {
+            color: #706c6c;
+        }
+        div {
+            background-image: url(../../../assets/no-task.png);
+            width: 320px;
+            height: 320px;
+            background-size: cover;
+
+            @media screen and (max-width: 339px) {
+                width: 300px;
+                height: 300px;
             }
         }
     }

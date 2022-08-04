@@ -178,8 +178,8 @@ const Container = () => {
                 <FileTranslator selectedLanguages={[selectedTranslateLanguage, selectedLanguageToTranslate]} loading={loading} setLoading={setLoading} />
             }
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '150px', margin: '10px auto' }}>
-                <ButtonsModal modalType={favorites} type="favorites" openModal={openModal} openTranslateByModal={openTranslateByModal} clearModalInfos={clearModalInfos} />
-                <ButtonsModal modalType={translateHistory} type="history" openModal={openModal} openTranslateByModal={openTranslateByModal} clearModalInfos={clearModalInfos} />
+                <ButtonsModal modalType={favorites} setFavorites={setFavorites} type="favorites" openModal={openModal} openTranslateByModal={openTranslateByModal} clearModalInfos={clearModalInfos} />
+                <ButtonsModal modalType={translateHistory} setFavorites={setFavorites} type="history" openModal={openModal} openTranslateByModal={openTranslateByModal} clearModalInfos={clearModalInfos} />
             </div>
         </div >
     );

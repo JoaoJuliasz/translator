@@ -47,6 +47,20 @@ $text-color: #6e6e6e;
 
         .icon {
             cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &.yellow {
+                color: #e6e631;
+            }
+
+            &:hover {
+                background: #f0eded;
+                border-radius: 50%;
+            }
         }
     }
 
