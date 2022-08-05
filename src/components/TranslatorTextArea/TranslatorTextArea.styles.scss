@@ -37,7 +37,7 @@ $text-color: #6e6e6e;
         position: absolute;
         bottom: 20px;
         right: 20px;
-        width: 100px;
+        width: 90px;
         color: #6e6e6e;
         font-size: 19px;
 
@@ -76,5 +76,10 @@ $text-color: #6e6e6e;
         max-height: 250px;
         max-width: 100%;
         min-width: auto;
+    }
+    @media only screen and (min-width: 720px) {
+        &.left {
+            border-left: none;
+        }
     }
 }

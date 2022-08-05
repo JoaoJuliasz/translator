@@ -74,7 +74,7 @@ const Favorite = ({ modalType, type, setFavorites, openModal, openTranslateByMod
                             </div>
                         </div>) :
                         <div className="no-content-container">
-                            <h2>There is no translations</h2>
+                            <h2>No previous translation</h2>
                             <div />
                         </div>}
                 </div>
