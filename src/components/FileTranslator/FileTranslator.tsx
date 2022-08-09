@@ -38,8 +38,8 @@ const FileTranslator = ({ selectedLanguages, loading, setLoading }: FileTranslat
         <div className="file-translator-container">
             <div className="container">
                 <div>
-                    <h3>Select a file</h3>
-                    <p>Supported file formats: .txt, .odt, .odp, .docx, .pptx, .epub, .html</p>
+                    <h3>Escolha um documento</h3>
+                    <p>Faça o upload de um arquivo: .txt, .odt, .odp, .docx, .pptx, .epub, .html</p>
                 </div>
                 <div className="upload-file-container">
                     <label className="upload-button" htmlFor={'file-input'}>Select a file</label>
